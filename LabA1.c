@@ -14,56 +14,68 @@ typedef struct poly
     POINT *p;
 } POLY;
 
-double dist(POINT1, POINT2)
+double dist(POINT p1, POINT p2)
 {
-    register double t;
-    return sqrt((t = (p2.x - p1.x)) * t + (t = (p2.y - p1.y)) * t);
+    return sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
 }
 
 double perimeter(POLY p)
 {
-    double s;
-    s = 0;
+    double s = 0;
     for(int i = 0; i < p.n; i++)
     {
-        s += dist(p.p[(i + 1) % p.n], p.p[i]);
-        return s;
+        s += dist(p.p[i], p.p[(i + 1) % p.n]);
     }
+    return s;
 }
-
-
 
 double area(POLY p)
 {
-    double s;
-    s = 0;
+    double s = 0;
     for(int i = 0; i < p.n; i++)
     {
         s += dist(p.p[(i + 1) % p.n], p.p[i]);
-        return s;
     }
+    return s;
 }
 
 double diameter(POLY p)
 {
-    //здесь код
+    double max = 0;
+    for (int i = 0; i < p.n; i++)
+    {
+        for (int j = i + 1; j < p.n; j++)
+        {
+            double d = dist(p.p[i], p.p[j]);
+            if (d > max)
+            {
+                max = d;
+            }
+        }
+    }
+    return max;
 }
 
-int main(int argc, char *argc[])
+int main(int argc, char *argv[])
 {
-    FILE *F
+    FILE *F;
     POLY p;
     
     F = fopen(argv[1], "r");
     
-    //здесь код чтения из файла
     fscanf(F, "%d", &p.n);
-    p.p = malloc(p.n *sizeof(POINT));
+    p.p = malloc(p.n * sizeof(POINT));
     for(int i = 0; i < p.n; i++)
     {
-        fscanf(F, "%lf%lf", &p.p[i].x, &p.p[i].y);
-        printf("%lf %lf %lf\n", dist(p.p[0], p.p[1]), dist(p.p[1], p.p[2]), perimeter(p));
+        fscanf(F, "%lf %lf", &p.p[i].x, &p.p[i].y);
     }
+    
+    printf("Периметр: %lf\n", perimeter(p));
+    printf("Площадь: %lf\n", area(p));
+    printf("Диаметр: %lf\n", diameter(p));
+    
+    free(p.p);
+    fclose(F);
     
     return 0;
 }
