@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-int n;
+int n; // Количество разделений отрезка на части
 
 // Функция для подынтегральной функции sqrt(Ci(x/3))
 double Ci(double x)
@@ -10,10 +10,10 @@ double Ci(double x)
 }
 
 // Функция для вычисления определенного интеграла методом трапеций
-double trapezoidal_rule(double z, double eps)
+double tr(double z, double eps)
 {
     n = 10;
-    double prev_result = 0;
+    double pred_r = 0;
     while (1)
     {
         double h = z / n;
@@ -28,15 +28,16 @@ double trapezoidal_rule(double z, double eps)
         result += (Ci(0) * sqrt(0) + Ci(z) * sqrt(z)) / 2;
         result *= h;
         
-        if (fabs(result - prev_result) < eps)
+        if (fabs(result - pred_r) < eps)
         {
             return result;
         }
         
-        prev_result = result;
+        pred_r = result;
         n *= 2;
     }
 }
+
 
 int main()
 {
@@ -48,7 +49,7 @@ int main()
     printf("\n");
     for(double z = start; z <= end; z += step)
     {
-        double integral = trapezoidal_rule(z, eps);
+        double integral = tr(z, eps); // Вычисление интеграла методом трапеции
         printf("%lf\t%lf %d\n", z, integral, n);
     }
     
