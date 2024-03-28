@@ -6,19 +6,29 @@
 
 double ch(double x)
 {
-    //ch(x) = 1 + x2/2! + x4/4! + x6/6! + x8/8! + ...
-    double s = 0;
-    int k = 0;
-    // ... ... ...
+    double s = 1;
+    double a = 1;
+    int k = 2;
+    while (fabs(a) > EPS)
+    {
+        a = a * x * x / (2*k * (2*k - 1));
+        s += a;
+        k++;
+    }
     return s;
 }
 
 double sh(double x)
 {
-    //sh(x) = x + x3/3! + x5/5! + x7/7! + x9/9! + ...
-    double s = 0;
-    int k = 0;
-    // ... ... ...
+    double s = x;
+    double a = x;
+    int k = 2;
+    while (fabs(a) > EPS)
+    {
+        a = a * x * x / ((2*k - 1) * 2 * k);
+        s += a;
+        k++;
+    }
     return s;
 }
 
