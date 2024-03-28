@@ -34,9 +34,9 @@ double area(POLY p)
     double s = 0;
     for(int i = 0; i < p.n; i++)
     {
-        s += dist(p.p[(i + 1) % p.n], p.p[i]);
+        s += (p.p[i].x + p.p[(i + 1) % p.n].x) * (p.p[i].y - p.p[(i + 1) % p.n].y);
     }
-    return s;
+    return fabs(s) / 2.0;
 }
 
 double diameter(POLY p)
